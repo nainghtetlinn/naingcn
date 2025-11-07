@@ -1,5 +1,6 @@
 import { ComponentPreview } from '@/components/component-preview';
 import { ComponentSource } from '@/components/component-source';
+import { ComponentsList } from '@/components/components-list';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { NRCInput } from '@/registry/new-york/ui/nrc-input';
 
@@ -58,6 +59,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ),
     ComponentPreview,
     ComponentSource,
+    ComponentsList,
     NRCInput,
   };
 }
