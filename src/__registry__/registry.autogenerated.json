@@ -16,6 +16,10 @@
         {
           "path": "src/registry/new-york/ui/nrc-input.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/registry/new-york/lib/nrc.ts",
+          "type": "registry:lib"
         }
       ]
     }

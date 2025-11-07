@@ -11,7 +11,7 @@ import {
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { NRC_STATES, NRC_TOWNSHIPS, NRC_TYPES } from 'public/nrc.min.json';
+import { NRC_STATES, NRC_TOWNSHIPS, NRC_TYPES } from '@/lib/nrc';
 
 export const enNrcPattern =
   /^([1-9]|1[0-3])\/([A-Z]{6,9})\((N|E|P|T|Y|S)\)([0-9]{6})$/;
@@ -20,6 +20,7 @@ export const mmNrcPattern =
   /^([၁-၉]|1[၀-၃])\/([က-အ]{3,3})\((နိုင်|ဧည့်|ပြု|သာသနာ|ယာယီ|စ)\)([၀-၉]{6})$/;
 
 type NRCState = {
+  lang: 'en' | 'mm';
   stateId: string;
   townshipId: string;
   typeId: string;
@@ -39,13 +40,6 @@ const NRCInputContext = React.createContext<NRCInputContext>(
   {} as NRCInputContext
 );
 
-const initialState: NRCState = {
-  stateId: '',
-  townshipId: '',
-  typeId: '',
-  number: '',
-};
-
 const useNRCInput = () => {
   const context = React.useContext(NRCInputContext);
 
@@ -58,10 +52,12 @@ const useNRCInput = () => {
 
 function NRCInput({
   className,
+  lang = 'en',
   defaultValue,
   onValueChange,
   ...props
 }: React.ComponentProps<'div'> & {
+  lang?: 'en' | 'mm';
   defaultValue?: string;
   onValueChange?: (data: string) => void;
 }) {
@@ -112,6 +108,7 @@ function NRCInput({
   return (
     <NRCInputContext.Provider
       value={{
+        lang,
         stateId,
         townshipId,
         typeId,
@@ -138,7 +135,7 @@ function NRCInput({
 function NRCStateInput({
   ...props
 }: React.ComponentProps<typeof SelectTrigger>) {
-  const { stateId, setStateId } = useNRCInput();
+  const { lang, stateId, setStateId } = useNRCInput();
 
   return (
     <Select onValueChange={setStateId} value={stateId}>
@@ -148,7 +145,11 @@ function NRCStateInput({
       <SelectContent>
         {NRC_STATES.map((state) => (
           <SelectItem key={state.id} value={state.id}>
-            {state.en}
+            {lang === 'en' ? (
+              state.en
+            ) : (
+              <span className='leading-6'>{state.mm}</span>
+            )}
           </SelectItem>
         ))}
       </SelectContent>
@@ -159,13 +160,16 @@ function NRCStateInput({
 function NRCTownshipInput({
   ...props
 }: React.ComponentProps<typeof SelectTrigger>) {
-  const { stateId, townshipId, setTownshipId } = useNRCInput();
+  const { lang, stateId, townshipId, setTownshipId } = useNRCInput();
 
   const townships = React.useMemo(() => {
     if (stateId === '') return [];
     const key = stateId as keyof typeof NRC_TOWNSHIPS;
-    return NRC_TOWNSHIPS[key];
-  }, [stateId]);
+    return NRC_TOWNSHIPS[key].sort((a, b) => {
+      if (lang === 'en') return a.en.localeCompare(b.en);
+      return a.mm.localeCompare(b.mm);
+    });
+  }, [stateId, lang]);
 
   return (
     <Select
@@ -179,7 +183,11 @@ function NRCTownshipInput({
       <SelectContent>
         {townships.map((township) => (
           <SelectItem key={township.id} value={township.id}>
-            {township.en}
+            {lang === 'en' ? (
+              township.en
+            ) : (
+              <span className='leading-6'>{township.mm}</span>
+            )}
           </SelectItem>
         ))}
       </SelectContent>
@@ -190,7 +198,7 @@ function NRCTownshipInput({
 function NRCTypeInput({
   ...props
 }: React.ComponentProps<typeof SelectTrigger>) {
-  const { typeId, setTypeId } = useNRCInput();
+  const { lang, typeId, setTypeId } = useNRCInput();
 
   return (
     <Select onValueChange={setTypeId} value={typeId}>
@@ -200,7 +208,11 @@ function NRCTypeInput({
       <SelectContent>
         {NRC_TYPES.map((type) => (
           <SelectItem key={type.id} value={type.id}>
-            {type.en}
+            {lang === 'en' ? (
+              type.en
+            ) : (
+              <span className='leading-6'>{type.mm}</span>
+            )}
           </SelectItem>
         ))}
       </SelectContent>

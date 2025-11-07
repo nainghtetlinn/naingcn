@@ -14,13 +14,14 @@ export const NRCInputDemo = () => {
   const [nrc, setNrc] = React.useState('');
 
   return (
-    <div>
+    <div className='w-full max-w-[350px]'>
       <NRCInput
-        className='grid gap-1 max-w-[350px]'
+        lang='mm'
+        className='grid gap-1'
         defaultValue='13/TAKANA(N)112233'
         onValueChange={setNrc}
       >
-        <div className='w-full flex gap-1 flex-wrap'>
+        <div className='flex gap-1 flex-wrap'>
           <NRCStateInput className='grow' />
           <NRCTownshipInput className='grow' />
           <NRCTypeInput className='grow' />
