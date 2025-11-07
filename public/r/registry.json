@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "naingcn",
+  "homepage": "http://localhost:3000",
+  "items": [
+    {
+      "name": "nrc-input",
+      "type": "registry:ui",
+      "title": "Myanmar NRC Input",
+      "description": "A simple myanmar nrc input component.",
+      "registryDependencies": [
+        "select",
+        "input"
+      ],
+      "files": [
+        {
+          "path": "src/registry/new-york/ui/nrc-input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
+}

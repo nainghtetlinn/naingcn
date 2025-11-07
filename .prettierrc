@@ -2,8 +2,9 @@
     "arrowParens": "always",
     "bracketSameLine": false,
     "semi": true,
-    "singleQuote": false,
+    "singleQuote": true,
+    "jsxSingleQuote": true,
     "trailingComma": "es5",
     "tabWidth": 2,
-    "singleAttributePerLine": true
+    "singleAttributePerLine": false
 }

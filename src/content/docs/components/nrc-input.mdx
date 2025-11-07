@@ -1,0 +1,74 @@
+---
+title: Myanmar NRC Input
+description: A simple myanmar nrc input component.
+---
+
+<ComponentPreview name='nrc-input-demo' />
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value='cli'>CLI</TabsTrigger>
+  <TabsTrigger value='manual'>Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```package-install
+npx shadcn@latest add "http://localhost:3000/r/nrc-input.json
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Add the `Select` and `Input` components to your project.</Step>
+
+The `NRCInput` component uses the `Select` and `Input` components. Make sure you have it installed in your project.
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource name='nrc-input' title='components/ui/nrc-input.tsx' />
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</Tabs>
+
+## Usage
+
+```tsx showLineNumbers
+import {
+  NRCInput,
+  NRCStateInput,
+  NRCTownshipInput,
+  NRCTypeInput,
+  NRCNumberInput,
+} from '@/components/ui/nrc-input';
+```
+
+```tsx showLineNumbers
+const [nrc, setNrc] = React.useState('');
+
+return (
+  <NRCInput
+    className='grid gap-1 w-full max-w-[350px]'
+    defaultValue='13/TAKANA(N)112233'
+    onValueChange={setNrc}
+  >
+    <div className='w-full flex gap-1 flex-wrap'>
+      <NRCStateInput className='grow' />
+      <NRCTownshipInput className='grow' />
+      <NRCTypeInput className='grow' />
+    </div>
+    <NRCNumberInput />
+  </NRCInput>
+);
+```
