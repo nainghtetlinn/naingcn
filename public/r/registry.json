@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "naingcn",
-  "homepage": "http://localhost:3000",
+  "homepage": "https://naingcn.vercel.app",
   "items": [
     {
       "name": "nrc-input",

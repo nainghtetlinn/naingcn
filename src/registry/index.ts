@@ -4,6 +4,6 @@ import { examples } from './registry-examples';
 
 export const registry = {
   name: 'naingcn',
-  homepage: 'http://localhost:3000',
+  homepage: 'https://naingcn.vercel.app',
   items: [...ui, ...examples],
 } satisfies Registry;
