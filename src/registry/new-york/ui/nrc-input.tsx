@@ -11,7 +11,7 @@ import {
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { NRC_STATES, NRC_TOWNSHIPS, NRC_TYPES } from '@/lib/nrc';
+import { NRC_STATES, NRC_TOWNSHIPS, NRC_TYPES } from '@/lib/nrc-data';
 
 export const enNrcPattern =
   /^([1-9]|1[0-3])\/([A-Z]{6,9})\((N|E|P|T|Y|S)\)([0-9]{6})$/;

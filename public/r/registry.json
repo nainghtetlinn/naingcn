@@ -18,7 +18,17 @@
           "type": "registry:ui"
         },
         {
-          "path": "src/registry/new-york/lib/nrc.ts",
+          "path": "src/registry/new-york/lib/nrc-data.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "nrc-data",
+      "type": "registry:lib",
+      "files": [
+        {
+          "path": "src/registry/new-york/lib/nrc-data.ts",
           "type": "registry:lib"
         }
       ]

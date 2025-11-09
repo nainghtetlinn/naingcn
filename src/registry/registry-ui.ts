@@ -12,7 +12,7 @@ export const ui: Registry['items'] = [
         path: 'new-york/ui/nrc-input.tsx',
         type: 'registry:ui',
       },
-      { path: 'new-york/lib/nrc.ts', type: 'registry:lib' },
+      { path: 'new-york/lib/nrc-data.ts', type: 'registry:lib' },
     ],
   },
 ];
