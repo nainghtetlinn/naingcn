@@ -12,4 +12,22 @@ export const examples: Registry['items'] = [
       },
     ],
   },
+  {
+    name: 'multistep-form-demo',
+    type: 'registry:example',
+    dependencies: ['react-hook-form', '@hookform/resolvers', 'zod'],
+    registryDependencies: [
+      'multistep-form',
+      'button',
+      'card',
+      'field',
+      'input',
+    ],
+    files: [
+      {
+        path: 'new-york/examples/multistep-form-demo.tsx',
+        type: 'registry:example',
+      },
+    ],
+  },
 ];
