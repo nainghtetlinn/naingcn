@@ -57,11 +57,13 @@ The `MultistepForm` component uses the `Button` component. Make sure you have it
 
 Define the shape of your form using a Zod schema. You can read more about using Zod in the [Zod documentation](https://zod.dev).
 
-```tsx showLineNumbers title="components/example-form.tsx"
+```tsx lineNumbers title="components/example-form.tsx" {3,5-9}
 'use client';
 
+// [!code highlight:1]
 import { z } from 'zod';
 
+// [!code highlight:5]
 const formSchema = z.object({
   username: z.string().min(2).max(50),
   email: z.email(),
@@ -71,11 +73,12 @@ const formSchema = z.object({
 
 ### Define steps
 
-```tsx showLineNumbers title="components/example-form.tsx"
+```tsx lineNumbers title="components/example-form.tsx"
 'use client';
 
 import { z } from 'zod';
 
+// [!code highlight:1]
 import { type Steps } from '@/components/ui/multistep-form';
 
 const formSchema = z.object({
@@ -84,6 +87,7 @@ const formSchema = z.object({
   password: z.string().min(2).max(50),
 });
 
+// [!code highlight:5]
 const steps: Steps<z.infer<typeof formSchema>> = [
   { value: 'step-one', fields: ['username'] },
   { value: 'step-two', fields: ['email'] },
@@ -95,9 +99,10 @@ const steps: Steps<z.infer<typeof formSchema>> = [
 
 Use the `useForm` hook from `react-hook-form` to create a form.
 
-```tsx showLineNumbers title="components/example-form.tsx"
+```tsx lineNumbers title="components/example-form.tsx"
 'use client';
 
+// [!code highlight:2]
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -117,6 +122,7 @@ const steps: Steps<z.infer<typeof formSchema>> = [
 ];
 
 export function CreateAccountForm() {
+  // [!code highlight:9]
   // 1. Define your form.
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -127,9 +133,11 @@ export function CreateAccountForm() {
     },
   });
 
+  // [!code highlight:2]
   // 2. active state to control MultistepForm
   const [active, setActive] = React.useState(0);
 
+  // [!code highlight:6]
   // 3. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -145,17 +153,21 @@ Since the example will be using a controlled component, you need to provide a de
 
 Since `MultistepForm` component wrapped the children with `FormProvider` from `react-hook-form` by default, you can use `useFormContext` in your step component.
 
-```tsx showLineNumbers title="components/step-one.tsx"
+```tsx lineNumbers title="components/step-one.tsx"
 'use client';
 
+// [!code highlight:1]
 import { Controller, useFormContext } from 'react-hook-form';
 
+// [!code highlight:2]
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 
+// [!code highlight:2]
 export function StepOne() {
   const form = useFormContext<z.infer<typeof formSchema>>();
 
+  // [!code highlight:14]
   return (
     <Controller
       control={form.control}
@@ -174,13 +186,14 @@ export function StepOne() {
 
 ### Build your form
 
-```tsx showLineNumbers title="components/example-form.tsx"
+```tsx lineNumbers title="components/example-form.tsx"
 'use client';
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+// [!code highlight:15]
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -212,6 +225,7 @@ const steps: Steps<z.infer<typeof schema>> = [
 export function CreateAccountForm() {
   // ...
 
+  // [!code highlight:38]
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
