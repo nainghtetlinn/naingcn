@@ -1,0 +1,275 @@
+---
+title: Multistep Form
+description: A multistep form using react-hook-form and zod.
+---
+
+<ComponentPreview name='multistep-form-demo' />
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value='cli'>CLI</TabsTrigger>
+  <TabsTrigger value='manual'>Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```package-install
+npx shadcn@latest add https://naingcn.vercel.app/r/multistep-form.json
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```package-install
+npm install react-hook-form
+```
+
+<Step>Add the `Button` component to your project.</Step>
+
+The `MultistepForm` component uses the `Button` component. Make sure you have it installed in your project.
+
+<Step>Copy and paste the following code into your project.</Step>
+
+<ComponentSource
+  name='multistep-form'
+  title='components/ui/multistep-form.tsx'
+/>
+
+<Step>Update the import paths to match your project setup.</Step>
+
+</Steps>
+
+</TabsContent>
+
+</Tabs>
+
+## Usage
+
+### Create a form schema
+
+Define the shape of your form using a Zod schema. You can read more about using Zod in the [Zod documentation](https://zod.dev).
+
+```tsx showLineNumbers title="components/example-form.tsx"
+'use client';
+
+import { z } from 'zod';
+
+const formSchema = z.object({
+  username: z.string().min(2).max(50),
+  email: z.email(),
+  password: z.string().min(2).max(50),
+});
+```
+
+### Define steps
+
+```tsx showLineNumbers title="components/example-form.tsx"
+'use client';
+
+import { z } from 'zod';
+
+import { type Steps } from '@/components/ui/multistep-form';
+
+const formSchema = z.object({
+  username: z.string().min(2).max(50),
+  email: z.email(),
+  password: z.string().min(2).max(50),
+});
+
+const steps: Steps<z.infer<typeof formSchema>> = [
+  { value: 'step-one', fields: ['username'] },
+  { value: 'step-two', fields: ['email'] },
+  { value: 'step-three', fields: ['password'] },
+];
+```
+
+### Define a form
+
+Use the `useForm` hook from `react-hook-form` to create a form.
+
+```tsx showLineNumbers title="components/example-form.tsx"
+'use client';
+
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+import { type Steps } from '@/components/ui/multistep-form';
+
+const formSchema = z.object({
+  username: z.string().min(2).max(50),
+  email: z.email(),
+  password: z.string().min(2).max(50),
+});
+
+const steps: Steps<z.infer<typeof formSchema>> = [
+  { value: 'step-one', fields: ['username'] },
+  { value: 'step-two', fields: ['email'] },
+  { value: 'step-three', fields: ['password'] },
+];
+
+export function CreateAccountForm() {
+  // 1. Define your form.
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: '',
+      email: '',
+      password: '',
+    },
+  });
+
+  // 2. active state to control MultistepForm
+  const [active, setActive] = React.useState(0);
+
+  // 3. Define a submit handler.
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+}
+```
+
+Since the example will be using a controlled component, you need to provide a default value for the field. See the [React Hook Form docs](https://react-hook-form.com/docs/usecontroller) to learn more about controlled components.
+
+### Build your step component
+
+Since `MultistepForm` component wrapped the children with `FormProvider` from `react-hook-form` by default, you can use `useFormContext` in your step component.
+
+```tsx showLineNumbers title="components/step-one.tsx"
+'use client';
+
+import { Controller, useFormContext } from 'react-hook-form';
+
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+
+export function StepOne() {
+  const form = useFormContext<z.infer<typeof formSchema>>();
+
+  return (
+    <Controller
+      control={form.control}
+      name='username'
+      render={({ field, fieldState }) => (
+        <Field data-invalid={fieldState.invalid}>
+          <FieldLabel htmlFor='username'>Username</FieldLabel>
+          <Input {...field} id='username' aria-invalid={fieldState.invalid} />
+          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+        </Field>
+      )}
+    />
+  );
+}
+```
+
+### Build your form
+
+```tsx showLineNumbers title="components/example-form.tsx"
+'use client';
+
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  type Steps,
+  MultistepForm,
+  MultistepFormContent,
+  MultistepFormNextTrigger,
+  MultistepFormPrevTrigger,
+} from '@/registry/new-york/ui/multistep-form';
+
+const schema = z.object({
+  username: z.string().min(1, 'Username required'),
+  email: z.email(),
+  password: z.string().min(1, 'Password required'),
+});
+
+const steps: Steps<z.infer<typeof schema>> = [
+  { value: 'step-one', fields: ['username'] },
+  { value: 'step-two', fields: ['email'] },
+  { value: 'step-three', fields: ['password'] },
+];
+
+export function CreateAccountForm() {
+  // ...
+
+  return (
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className='max-w-[350px] w-full'
+    >
+      <MultistepForm
+        form={form}
+        steps={steps}
+        active={active}
+        onActiveChange={setActive}
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Create Account</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <MultistepFormContent value='step-one'>
+              <StepOne />
+            </MultistepFormContent>
+            <MultistepFormContent value='step-two'>
+              <StepTwo />
+            </MultistepFormContent>
+            <MultistepFormContent value='step-three'>
+              <StepThree />
+            </MultistepFormContent>
+          </CardContent>
+          <CardFooter className='justify-end gap-2'>
+            {active > 0 && <MultistepFormPrevTrigger />}
+            {active === steps.length - 1 ? (
+              <Button>Submit</Button>
+            ) : (
+              <MultistepFormNextTrigger />
+            )}
+          </CardFooter>
+        </Card>
+      </MultistepForm>
+    </form>
+  );
+}
+```
+
+### Done
+
+That's it. You now have a fully accessible multistep form that is type-safe with client-side validation.
+
+## API Reference
+
+### MultistepForm
+
+| Prop             | Type                                | Default    |
+| ---------------- | ----------------------------------- | ---------- |
+| `form`           | `UseFormReturn`                     | `required` |
+| `steps`          | `{value: string; fields: string[]}` | `required` |
+| `active`         | `number`                            | `required` |
+| `onActiveChange` | `(active: number) => void`          | `required` |
+
+### MultistepFormContent
+
+| Prop    | Type     | Default    |
+| ------- | -------- | ---------- |
+| `value` | `string` | `required` |
