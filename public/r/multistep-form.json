@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "multistep-form",
+  "type": "registry:ui",
+  "title": "Multistep Form",
+  "description": "A multistep form using react-hook-form and zod.",
+  "dependencies": [
+    "react-hook-form"
+  ],
+  "registryDependencies": [
+    "button"
+  ],
+  "files": [
+    {
+      "path": "src/registry/new-york/ui/multistep-form.tsx",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport {\n  FormProvider,\n  type FieldPath,\n  type FieldValues,\n  type UseFormReturn,\n} from 'react-hook-form';\n\nimport { Button } from '@/components/ui/button';\nimport { cn } from '@/lib/utils';\n\ntype Steps<\n  TFieldValues extends FieldValues = FieldValues,\n  TFieldPath extends FieldPath<TFieldValues> = FieldPath<TFieldValues>\n> = {\n  value: string;\n  fields: TFieldPath[];\n}[];\n\ntype MultistepFormState = {\n  activeValue: string;\n};\n\ntype MultistepFormAction = { handleNext: () => void; handlePrev: () => void };\n\ntype MultistepFormContext = MultistepFormState & MultistepFormAction;\n\nconst MultistepFormContext = React.createContext<MultistepFormContext>(\n  {} as MultistepFormContext\n);\n\nconst useMultistepFormContext = (name: string) => {\n  const context = React.useContext(MultistepFormContext);\n\n  if (!context) {\n    throw new Error(`${name} should be used within <MultistepForm>`);\n  }\n\n  return context;\n};\n\nfunction MultistepForm<\n  TFieldValues extends FieldValues = FieldValues,\n  TContext = unknown,\n  TTransformedValues = TFieldValues\n>({\n  form,\n  steps,\n  active,\n  onActiveChange,\n  children,\n}: {\n  form: UseFormReturn<TFieldValues, TContext, TTransformedValues>;\n  steps: Steps<TFieldValues>;\n  active: number;\n  onActiveChange: React.Dispatch<React.SetStateAction<number>>;\n} & React.PropsWithChildren) {\n  const handleNext = async () => {\n    const isValid = await form.trigger(steps[active].fields, {\n      shouldFocus: true,\n    });\n    if (!isValid) {\n      return; // Stop progression if validation fails\n    }\n    if (active < steps.length - 1) {\n      onActiveChange((prev) => prev + 1);\n    }\n  };\n\n  const handlePrev = () => {\n    if (active > 0) {\n      onActiveChange((prev) => prev - 1);\n    }\n  };\n\n  const activeValue = steps[active].value;\n\n  return (\n    <MultistepFormContext.Provider\n      value={{\n        activeValue,\n        handleNext,\n        handlePrev,\n      }}\n    >\n      <FormProvider {...form}>{children}</FormProvider>\n    </MultistepFormContext.Provider>\n  );\n}\n\nfunction MultistepFormContent({\n  value,\n  className,\n  ...props\n}: React.ComponentProps<'div'> & { value: string }) {\n  const { activeValue } = useMultistepFormContext('<MultistepFormContent>');\n\n  return (\n    <div\n      className={cn(activeValue === value ? 'block' : 'hidden', className)}\n      {...props}\n    />\n  );\n}\n\nfunction MultistepFormNextTrigger({\n  children = 'Next',\n  ...props\n}: React.ComponentProps<typeof Button>) {\n  const { handleNext } = useMultistepFormContext('<MultistepFormNextTrigger>');\n\n  return (\n    <Button\n      type='button'\n      data-slot='multistep-form-next-trigger'\n      children={children}\n      onClick={handleNext}\n      {...props}\n    />\n  );\n}\n\nfunction MultistepFormPrevTrigger({\n  variant = 'secondary',\n  children = 'Previous',\n  ...props\n}: React.ComponentProps<typeof Button>) {\n  const { handlePrev } = useMultistepFormContext('<MultistepFormPrevTrigger>');\n\n  return (\n    <Button\n      type='button'\n      data-slot='multistep-form-prev-trigger'\n      variant={variant}\n      children={children}\n      onClick={handlePrev}\n      {...props}\n    />\n  );\n}\n\nexport {\n  MultistepForm,\n  MultistepFormContent,\n  MultistepFormNextTrigger,\n  MultistepFormPrevTrigger,\n  type Steps,\n};\n",
+      "type": "registry:ui"
+    }
+  ]
+}

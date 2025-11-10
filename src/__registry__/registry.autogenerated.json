@@ -24,6 +24,24 @@
       ]
     },
     {
+      "name": "multistep-form",
+      "type": "registry:ui",
+      "title": "Multistep Form",
+      "description": "A multistep form using react-hook-form and zod.",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "src/registry/new-york/ui/multistep-form.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "nrc-data",
       "type": "registry:lib",
       "files": [
