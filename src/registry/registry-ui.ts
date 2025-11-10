@@ -15,4 +15,18 @@ export const ui: Registry['items'] = [
       { path: 'new-york/lib/nrc-data.ts', type: 'registry:lib' },
     ],
   },
+  {
+    name: 'multistep-form',
+    type: 'registry:ui',
+    title: 'Multistep Form',
+    description: 'A multistep form using react-hook-form and zod.',
+    dependencies: ['react-hook-form'],
+    registryDependencies: ['button'],
+    files: [
+      {
+        path: 'new-york/ui/multistep-form.tsx',
+        type: 'registry:ui',
+      },
+    ],
+  },
 ];
