@@ -5,16 +5,33 @@ export default function HomePage() {
   return (
     <>
       <title>Naingcn</title>
-      <div className='relative flex w-full flex-1 flex-col bg-black'>
-        {/* Vercel Grid */}
+      <div className='relative flex w-full flex-1 flex-col'>
         <div
-          className='absolute inset-0 opacity-30'
+          className='absolute inset-0 z-0 dark:hidden'
           style={{
             backgroundImage: `
-          linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
-        `,
-            backgroundSize: '60px 60px',
+        linear-gradient(to right, #d1d5db 1px, transparent 1px),
+        linear-gradient(to bottom, #d1d5db 1px, transparent 1px)
+      `,
+            backgroundSize: '32px 32px',
+            WebkitMaskImage:
+              'radial-gradient(ellipse 60% 60% at 50% 50%, #000 30%, transparent 70%)',
+            maskImage:
+              'radial-gradient(ellipse 60% 60% at 50% 50%, #000 30%, transparent 70%)',
+          }}
+        />
+        <div
+          className='absolute inset-0 z-0 hidden dark:block'
+          style={{
+            backgroundImage: `
+        linear-gradient(to right, rgba(75, 85, 99, 0.4) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(75, 85, 99, 0.4) 1px, transparent 1px)
+      `,
+            backgroundSize: '32px 32px',
+            WebkitMaskImage:
+              'radial-gradient(ellipse 60% 60% at 50% 50%, #000 30%, transparent 70%)',
+            maskImage:
+              'radial-gradient(ellipse 60% 60% at 50% 50%, #000 30%, transparent 70%)',
           }}
         />
 
